@@ -1,8 +1,14 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
+from django.utils.text import slugify
 from .models import Product
 
 
-class ProductSerializer(ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
+    slug = serializers.SerializerMethodField()
+
+    def get_slug(self, instance):
+        return slugify(instance.title)
+
     class Meta:
         model = Product
         fields = [
