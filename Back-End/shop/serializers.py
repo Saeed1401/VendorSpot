@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from django.utils.text import slugify
-from .models import Product
+from .models import Product, Category
 
 
 class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField()
 
     def get_slug(self, instance):
-        return slugify(instance.title)
+        return slugify(instance.title) # to automatically fill the slug field in product by title
 
     class Meta:
         model = Product
@@ -21,3 +21,10 @@ class ProductSerializer(serializers.ModelSerializer):
             'last_update', 
             'category'
         ]
+
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['title', 'thumbnail']
