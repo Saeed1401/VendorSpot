@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='category',
-            field=models.ForeignKey(default='+', on_delete=django.db.models.deletion.PROTECT, related_name='products', to='shop.category'),
+            field=models.ForeignKey(default='1', on_delete=django.db.models.deletion.PROTECT, related_name='products', to='shop.category'),
             preserve_default=False,
         ),
     ]
