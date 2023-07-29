@@ -110,7 +110,7 @@ class CartItem(models.Model):
         on_delete=models.CASCADE, 
         related_name='items'
     )
-    quantity = models.PositiveIntegerField(
+    quantity = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)], 
         verbose_name='مقدار'
     )
@@ -123,3 +123,32 @@ class CartItem(models.Model):
         ]
 
 
+class Order(models.Model):
+    customer = models.ForeignKey(Customer,
+        on_delete=models.PROTECT,
+        related_name='orders'
+    )
+    ordered_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان سفارش')
+
+    class Meta:
+        verbose_name = ('سفارش')
+        verbose_name_plural = ('سفارش ها')
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, 
+        on_delete=models.PROTECT, 
+        related_name='items'
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        verbose_name = 'مقدار'   
+    )
+    price = models.DecimalField(
+        max_digits=8, 
+        decimal_places=2, 
+        verbose_name='ریال)قیمت)',
+        validators=[
+            MinValueValidator(10000),
+        ],
+    )
