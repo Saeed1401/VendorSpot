@@ -140,7 +140,7 @@ class OrderItem(models.Model):
         on_delete=models.PROTECT, 
         related_name='items'
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='orderitems')
     quantity = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         verbose_name = 'مقدار'   
