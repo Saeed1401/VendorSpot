@@ -14,6 +14,7 @@ class Category(models.Model):
     title = models.CharField(max_length=70, verbose_name='عنوان')
     thumbnail = models.ImageField(
         upload_to='shop/images', 
+        validators=[file_size_validation],
         verbose_name='تصویر دسته'
     )
 
