@@ -29,3 +29,8 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'title', 'thumbnail']
+
+    def get_thumbnail_url(self, obj):
+        request = self.context.get('request')
+        photo_url = obj.thumbnail.url
+        return request.build_absolute_uri(photo_url)

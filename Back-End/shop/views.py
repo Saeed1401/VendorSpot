@@ -31,9 +31,10 @@ class CategoryList(APIView):
     """
     list and create operation for Category
     """
+    
     def get(self, request):
         queryset = Category.objects.all()
-        serializer = CategorySerializer(queryset, many=True)
+        serializer = CategorySerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     
     def post(self, request):
