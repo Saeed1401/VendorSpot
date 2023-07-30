@@ -16,6 +16,7 @@ data = {
     'title': random_string,
 }
 
+# to be valid this image must be less than 600 KB !!
 IMAGE_NAME = 'anonymous.jpg'
 
 image_path = os.path.join(os.environ.get("PATH_TO_DJANGO_BASE_DIR"), 'media', IMAGE_NAME)
