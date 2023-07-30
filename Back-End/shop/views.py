@@ -3,8 +3,14 @@ from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Product, Category
-from .serializers import ProductSerializer, CategorySerializer
+from .models import (Product,
+    Category,
+    Customer
+)
+from .serializers import (ProductSerializer,
+    CategorySerializer,
+    CustomerSerializer
+)
 
 
 # custom User model
@@ -104,4 +110,47 @@ class CategoryDetail(APIView):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED
             )
         category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+
+class CustomerList(APIView):
+    """
+    List and create operation for Customer
+    """
+
+    def get(self, request):
+        queryset = Customer.objects.all()
+        serializer = CustomerSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = CustomerSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+
+class CustomerDetail(APIView):
+    """
+    get, update and delete a particular Customer
+    """
+
+    def get(self, request, pk):
+        customer = get_object_or_404(Customer, pk=pk)
+        serializer = CustomerSerializer(customer)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        customer = get_object_or_404(Customer, pk=pk)
+        serializer = CustomerSerializer(customer, data=request.data)
+        serializer.is_valid()
+        serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, pk):
+        customer = get_object_or_404(Customer, pk=pk)
+        customer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.text import slugify
-from .models import Product, Category
+from .models import Product, Category, Customer
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -40,3 +40,9 @@ class CategorySerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         photo_url = obj.thumbnail.url
         return request.build_absolute_uri(photo_url)
+    
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['user_id', 'phone', 'birth_date']
