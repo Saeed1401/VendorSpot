@@ -10,7 +10,7 @@ def generate_random_string(length):
 random_string = generate_random_string(60)
 
 
-api_url = 'http://localhost:8000/shop/categories'
+api_url = 'http://localhost:8000/shop/categories/'
 
 data = {
     'title': random_string,

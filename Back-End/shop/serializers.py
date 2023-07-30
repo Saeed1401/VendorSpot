@@ -6,8 +6,6 @@ from .models import Product, Category
 class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField()
 
-    def get_slug(self, instance):
-        return slugify(instance.title) # to automatically fill the slug field in product by title
 
     class Meta:
         model = Product
@@ -21,6 +19,14 @@ class ProductSerializer(serializers.ModelSerializer):
             'last_update', 
             'category'
         ]
+
+    def get_slug(self, instance):
+        return slugify(instance.title) # to automatically fill the slug field in product by title
+
+    def get_product_image_url(self, obj):
+        request = self.context.get('request')
+        photo_url = obj.product_image.url
+        return request.build_absolute_url(photo_url)
 
 
 

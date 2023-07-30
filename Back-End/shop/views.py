@@ -18,7 +18,7 @@ class ProductList(APIView):
 
     def get(self, request):
         queryset = Product.objects.all()
-        serializer = ProductSerializer(queryset, many=True)
+        serializer = ProductSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     
     def post(self, request):
