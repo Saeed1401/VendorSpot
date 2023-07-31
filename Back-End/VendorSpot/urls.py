@@ -28,6 +28,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', include('shop.urls')),
     path('api-auth/', include('rest_framework.urls')), # django restframework
+    path('auth/', include('djoser.urls')), # Djoser
+    path('auth/', include('djoser.urls.jwt')), # Djoser
     path("__debug__/", include("debug_toolbar.urls")), # django-debug-toolbar
 ]
 
