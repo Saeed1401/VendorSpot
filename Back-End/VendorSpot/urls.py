@@ -19,6 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+admin.site.site_header = 'VendorSpot'
+admin.site.index_title = 'ادمین'
+admin.site.site_title = 'VendorSpot پنل ادمین'
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', include('shop.urls')),
