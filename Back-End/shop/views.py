@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from .models import (Product,
@@ -63,10 +63,15 @@ class CategoryViewSet(ModelViewSet):
     
 
     
-class CustomerViewSet(ModelViewSet):
+class CustomerViewSet(
+                        CreateModelMixin, 
+                        UpdateModelMixin, 
+                        RetrieveModelMixin, 
+                        GenericViewSet
+                    ):
     """
-    List and create operation for Customer
-    as well as get, update and delete a particular Customer
+    create operation for Customer
+    as well as get and update a particular Customer
     """
     
     queryset = Customer.objects.all()
