@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import format_html, urlencode
+from django.urls import reverse
 from . import models
 
 
@@ -13,7 +15,8 @@ class ProductAdmin(admin.ModelAdmin):
     'description', 
     'inventory', 
     'last_update', 
-    'category'
+    'category',
+    'get_jalali_last_update'
 ]
     list_per_page = 10
 
@@ -30,5 +33,18 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['user', 'phone', 'birth_date']
+    list_display = ['user', 'user_id', 'phone', 'birth_date']
+    list_select_related = ['user']
     list_per_page = 10
+
+    def user_id(self, customer):
+        url = (
+            reverse('admin:core_user_changelist')
+            + '?'
+            + urlencode(
+                {
+                    'user__id': str(customer.user.id)
+                }
+            )
+        )
+        return format_html('<a href="{}" >{}</a>', url, customer.user.id)

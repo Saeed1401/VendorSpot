@@ -11,5 +11,6 @@ def file_size_validation(file):
 def validate_phone_number(number):
     length = 11
 
-    if len(number) != length:
+    if len(str(number)) != length:
         raise ValidationError(f'{number} is Not valid!!, hint: it must be 11 digits')
+    return number

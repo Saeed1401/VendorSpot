@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
                                         "email", 
                                         "image", 
                                         "gender", 
-                                        "language"
+                                        "language",
                                         )}),
         (
             ("Permissions"),
