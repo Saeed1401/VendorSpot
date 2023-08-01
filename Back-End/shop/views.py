@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -8,11 +8,13 @@ from rest_framework import status
 from .models import (Product,
     Category,
     Customer,
-    OrderItem
+    OrderItem,
+    Cart
 )
 from .serializers import (ProductSerializer,
     CategorySerializer,
-    CustomerSerializer
+    CustomerSerializer,
+    CartSerializer
 )
 
 
@@ -90,3 +92,12 @@ class CustomerViewSet(
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
+        
+
+class CartViewSet(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
+    """
+    provide Create, get and delete operation
+    """
+
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
