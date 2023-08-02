@@ -9,12 +9,16 @@ from .models import (Product,
     Category,
     Customer,
     OrderItem,
-    Cart
+    Cart,
+    CartItem
 )
 from .serializers import (ProductSerializer,
     CategorySerializer,
     CustomerSerializer,
-    CartSerializer
+    CartSerializer,
+    CartItemSerializer,
+    CreateCartItemSerializer,
+    UpdateCartItemSerializer
 )
 
 
@@ -101,3 +105,24 @@ class CartViewSet(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, Gener
 
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
+
+
+
+class CartItemViewSet(ModelViewSet):
+    """
+    provide all the operations for items of a particular cart.
+    """
+
+    def get_queryset(self):
+        return CartItem.objects.filter(cart_id=self.kwargs['cart_pk'])
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateCartItemSerializer # to create a cartitem
+        elif self.request.method == 'PUT':
+            return UpdateCartItemSerializer # for update the quantity
+        return CartItemSerializer # to get an actual cartitem(view)
+
+    def get_serializer_context(self):
+        return {'cart_id': self.kwargs['cart_pk']}
+    
