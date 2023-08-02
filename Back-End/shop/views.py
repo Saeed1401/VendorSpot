@@ -10,7 +10,8 @@ from .models import (Product,
     Customer,
     OrderItem,
     Cart,
-    CartItem
+    CartItem,
+    Order,
 )
 from .serializers import (ProductSerializer,
     CategorySerializer,
@@ -18,7 +19,9 @@ from .serializers import (ProductSerializer,
     CartSerializer,
     CartItemSerializer,
     CreateCartItemSerializer,
-    UpdateCartItemSerializer
+    UpdateCartItemSerializer,
+    OrderSerializer,
+    CreateOrderSerializer
 )
 
 
@@ -125,4 +128,37 @@ class CartItemViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'cart_id': self.kwargs['cart_pk']}
+    
+
+
+class OrderViewSet(ModelViewSet):
+    """
+    Create an order, Get the order and delete it
+    """
+
+    http_method_names = ['get', 'post', 'delete', 'head', 'options']
+    queryset = Order.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_staff:
+            return OrderItem.objects.all()
+        
+        customer_id = Customer.objects.only('id').get(user_id=user.id)
+        return Order.objects.filter(customer_id=customer_id)
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOrderSerializer(data=request.data, context={'user_id': self.request.user.id})
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+    
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
     
