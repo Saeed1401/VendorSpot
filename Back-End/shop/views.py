@@ -3,8 +3,10 @@ from django.contrib.auth import get_user_model
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 from rest_framework import status
+from .permissions import IsAdminOrReadOnly
 from .models import (Product,
     Category,
     Customer,
@@ -37,6 +39,7 @@ class ProductViewSet(ModelViewSet):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -59,6 +62,7 @@ class CategoryViewSet(ModelViewSet):
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -86,9 +90,10 @@ class CustomerViewSet(
     
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [IsAdminUser]
 
 
-    @action(detail=False, methods=['GET', 'PUT'])
+    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
         (customer, created) = Customer.objects.get_or_create(user_id=request.user.id)
         if request.method == 'GET':
@@ -137,7 +142,7 @@ class OrderViewSet(ModelViewSet):
     """
 
     http_method_names = ['get', 'post', 'delete', 'head', 'options']
-    queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
