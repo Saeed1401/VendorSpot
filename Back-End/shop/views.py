@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -6,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 from rest_framework import status
+from .pagination import DefaultPagination
 from .permissions import IsAdminOrReadOnly
 from .models import (Product,
     Category,
@@ -40,6 +40,7 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = DefaultPagination
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -63,6 +64,7 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = DefaultPagination
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -120,6 +122,8 @@ class CartItemViewSet(ModelViewSet):
     """
     provide all the operations for items of a particular cart.
     """
+
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         return CartItem.objects.filter(cart_id=self.kwargs['cart_pk'])
