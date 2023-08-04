@@ -5,3 +5,6 @@ class ShopConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'shop'
     verbose_name = 'اپ خرید'
+
+    def ready(self) -> None:
+        import shop.signals.handlers
