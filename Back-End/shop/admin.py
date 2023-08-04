@@ -33,7 +33,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['user', 'user_id', 'phone', 'birth_date']
+    list_display = ['user', 'user_id', 'birth_date']
     list_select_related = ['user']
     list_per_page = 10
 

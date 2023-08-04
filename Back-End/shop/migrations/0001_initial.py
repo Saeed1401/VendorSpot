@@ -38,7 +38,6 @@ class Migration(migrations.Migration):
             name='Customer',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('phone', models.IntegerField(validators=[shop.validators.validate_phone_number], verbose_name='شماره تلفن')),
                 ('birth_date', models.DateField(blank=True, null=True, verbose_name='تاریخ تولد')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

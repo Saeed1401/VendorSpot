@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from persiantools.jdatetime import JalaliDate
+from .validators import validate_phone_number
 
 
 class User(AbstractUser):
@@ -24,6 +25,12 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=25, verbose_name='نام', blank=True)
     last_name = models.CharField(max_length=30, verbose_name='نام خانوادگی', blank=True)
     email = models.EmailField(unique=True, verbose_name='آدرس ایمیل')
+    phone = models.CharField(
+        max_length=11,
+        validators=[validate_phone_number],
+        unique=True,
+        verbose_name='شماره تلفن'
+    )
     image = models.ImageField(upload_to='core/images', verbose_name='تصویر', null=True, blank=True)
     gender = models.CharField(max_length=3, choices=GENDER_CHOICES, verbose_name='جنسیت', null=True, blank=True)
     language = models.CharField(max_length=10, choices=LANGUAGE_CHOICES, verbose_name='زبان', null=True, blank=True)

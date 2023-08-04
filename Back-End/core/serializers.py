@@ -21,7 +21,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password2', None)
+        validated_data.pop('confirm_password', None)
         return super().create(validated_data)
     
  
@@ -32,6 +32,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             'password', 
             'confirm_password',
             'email', 
+            'phone',
             'first_name', 
             'last_name', 
             'language', 
@@ -48,6 +49,7 @@ class UserSerializer(BaseUserSerializer):
             'username', 
             'password', 
             'email', 
+            'phone',
             'first_name', 
             'last_name', 
             'language', 

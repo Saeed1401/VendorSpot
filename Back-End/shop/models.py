@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator
 from django.contrib.auth import get_user_model
 from persiantools.jdatetime import JalaliDate
 from uuid import uuid4
-from .validators import file_size_validation, validate_phone_number
+from .validators import file_size_validation
 
 
 # custom User model
@@ -76,10 +76,6 @@ class Product(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.IntegerField(
-        validators=[validate_phone_number], 
-        verbose_name='شماره تلفن'
-    )
     birth_date = models.DateField(null=True, blank=True, verbose_name='تاریخ تولد')
 
     def __str__(self):
