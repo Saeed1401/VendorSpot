@@ -27,6 +27,7 @@ admin.site.site_title = 'VendorSpot پنل ادمین'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', include('shop.urls')),
+    path('core/', include('core.urls')),
     path('api-auth/', include('rest_framework.urls')), # django restframework
     path('auth/', include('djoser.urls')), # Djoser
     path('auth/', include('djoser.urls.jwt')), # Djoser

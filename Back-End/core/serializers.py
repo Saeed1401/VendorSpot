@@ -1,6 +1,7 @@
 from djoser.serializers import (
     UserCreateSerializer as BaseUserCreateSerializer, 
     UserSerializer as BaseUserSerializer,
+    UserCreatePasswordRetypeSerializer as BaseUserCreatePasswordRetypeSerializer,
 )
 from rest_framework import serializers
 
@@ -39,6 +40,28 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             'gender'
         ]
 
+
+
+class UserCreatePasswordRetypeSerializer(BaseUserCreatePasswordRetypeSerializer):
+    serializers.CharField(
+            style={
+                "input_type": "password",
+                "placeholder": "confirm your password"
+            }
+        )
+    
+    class Meta(BaseUserCreatePasswordRetypeSerializer.Meta):
+        fields = [
+            'id', 
+            'username', 
+            'password',
+            'email', 
+            'phone',
+            'first_name', 
+            'last_name', 
+            'language', 
+            'gender'
+        ]
 
         
 
