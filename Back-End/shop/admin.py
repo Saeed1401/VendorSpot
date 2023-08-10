@@ -19,6 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     'get_jalali_last_update'
 ]
     list_per_page = 10
+    search_fields = ['title__istartswith']
 
 
 
@@ -28,6 +29,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ['thumbnail']
     list_editable = ['title']
     list_per_page = 10
+    search_fields = ['title__istartswith']
 
 
 
@@ -36,6 +38,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ['user', 'user_id', 'birth_date']
     list_select_related = ['user']
     list_per_page = 10
+    search_fields = ['first_name__istartswith', 'last_name__istartswith']
 
     def user_id(self, customer):
         url = (
@@ -48,3 +51,19 @@ class CustomerAdmin(admin.ModelAdmin):
             )
         )
         return format_html('<a href="{}" >{}</a>', url, customer.user.id)
+    
+
+
+class OrderItemInline(admin.TabularInline):
+    model = models.OrderItem
+    autocomplete_fields = ['product']
+    extra = 0
+    min_num = 1
+    
+
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'ordered_at', 'customer']
+    list_select_related = ['customer']
+    inlines = [OrderItemInline]
