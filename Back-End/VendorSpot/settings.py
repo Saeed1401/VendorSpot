@@ -14,6 +14,14 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+# Construct the path to your .env file
+env_file_path = os.path.join(os.path.dirname(__file__), '../.env')
+
+# Load environment variables from the .env file
+from dotenv import load_dotenv
+load_dotenv(env_file_path)
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -180,8 +188,8 @@ DJOSER = {
     },
     # 'LOGIN_FIELD': 'email',
     'SEND_ACTIVATION_EMAIL': True,
-    'PROTOCOL': os.environ.get('PROTOCOL'),
-    'DOMAIN': os.environ.get('DOMAIN'),
+    'PROTOCOL': os.environ.get('PROTOCOL', default='http'),
+    'DOMAIN': os.environ.get('DOMAIN', default='localhost:8000'),
     'SEND_CONFIRMATION_EMAIL': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'PASSWORD_RESET_CONFIRM_URL': '/password-reset/{uid}/{token}',
@@ -191,7 +199,7 @@ DJOSER = {
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
     'TOKEN_MODEL': None,
     'EMAIL': {
-        'activation': 'djoser.email.ActivationEmail',
+        'activation': 'core.email.MyActivationEmail',
         'confirmation': 'djoser.email.ConfirmationEmail',
         'password_reset': 'djoser.email.PasswordResetEmail',
         'password_changed_confirmation': 'djoser.email.PasswordChangedConfirmationEmail',
